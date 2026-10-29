@@ -1,0 +1,57 @@
+<div class="encabezado">
+  <h1>Tickets de soporte</h1>
+  <a routerLink="/tickets/nuevo" class="btn btn-primario">+ Nuevo ticket</a>
+</div>
+
+@if (error()) {
+  <div class="alerta alerta-error" role="alert">
+    {{ error() }}
+    <button class="btn btn-sec" (click)="cargar()">Reintentar</button>
+  </div>
+}
+@if (exito()) {
+  <div class="alerta alerta-ok" role="status">{{ exito() }}</div>
+}
+
+@if (cargando()) {
+  <p>Cargando tickets...</p>
+} @else if (tickets().length === 0 && !error()) {
+  <p class="vacio">No hay tickets registrados. Cree el primero con «Nuevo ticket».</p>
+} @else if (tickets().length > 0) {
+  <div class="tabla-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Asunto</th>
+          <th>Solicitante</th>
+          <th>Categoría</th>
+          <th>Prioridad</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of tickets(); track t.id) {
+          <tr>
+            <td>{{ t.id }}</td>
+            <td>
+              <strong>{{ t.asunto }}</strong>
+              <div class="desc">{{ t.descripcion }}</div>
+            </td>
+            <td>{{ t.solicitante }}</td>
+            <td>{{ t.categoria }}</td>
+            <td><span class="chip prio-{{ clase(t.prioridad) }}">{{ t.prioridad }}</span></td>
+            <td><span class="chip est-{{ clase(t.estado) }}">{{ t.estado }}</span></td>
+            <td>{{ t.fechaRegistro }}</td>
+            <td class="acciones">
+              <a [routerLink]="['/tickets', t.id, 'editar']" class="btn btn-sec">Editar</a>
+              <button class="btn btn-peligro" (click)="eliminar(t)">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

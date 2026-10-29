@@ -1,0 +1,79 @@
+<h1>{{ id() === null ? 'Nuevo ticket' : 'Editar ticket #' + id() }}</h1>
+
+@if (error()) {
+  <div class="alerta alerta-error" role="alert">{{ error() }}</div>
+}
+
+@if (cargando()) {
+  <p>Cargando ticket...</p>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate class="formulario">
+    <label>
+      Asunto *
+      <input type="text" formControlName="asunto" placeholder="Resumen de la solicitud" />
+      @if (invalido('asunto')) {
+        <small class="error-campo">Obligatorio, entre 3 y 120 caracteres.</small>
+      }
+    </label>
+
+    <label>
+      Solicitante *
+      <input type="text" formControlName="solicitante" placeholder="Nombre de quien solicita" />
+      @if (invalido('solicitante')) {
+        <small class="error-campo">Obligatorio, entre 3 y 80 caracteres.</small>
+      }
+    </label>
+
+    <label>
+      Descripción *
+      <textarea rows="4" formControlName="descripcion" placeholder="Detalle del problema"></textarea>
+      @if (invalido('descripcion')) {
+        <small class="error-campo">Obligatoria, entre 10 y 1000 caracteres.</small>
+      }
+    </label>
+
+    <div class="fila">
+      <label>
+        Categoría *
+        <select formControlName="categoria">
+          <option value="">Seleccione...</option>
+          @for (c of categorias; track c) {
+            <option [value]="c">{{ c }}</option>
+          }
+        </select>
+        @if (invalido('categoria')) {
+          <small class="error-campo">Seleccione una categoría.</small>
+        }
+      </label>
+
+      <label>
+        Prioridad *
+        <select formControlName="prioridad">
+          <option value="">Seleccione...</option>
+          @for (p of prioridades; track p) {
+            <option [value]="p">{{ p }}</option>
+          }
+        </select>
+        @if (invalido('prioridad')) {
+          <small class="error-campo">Seleccione una prioridad.</small>
+        }
+      </label>
+
+      <label>
+        Estado *
+        <select formControlName="estado">
+          @for (e of estados; track e) {
+            <option [value]="e">{{ e }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="botones">
+      <button type="submit" class="btn btn-primario" [disabled]="guardando()">
+        {{ guardando() ? 'Guardando...' : 'Guardar' }}
+      </button>
+      <a routerLink="/tickets" class="btn btn-sec">Cancelar</a>
+    </div>
+  </form>
+}
