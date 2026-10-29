@@ -1,0 +1,15 @@
+{
+  "name": "soporte-tickets-api",
+  "version": "1.0.0",
+  "description": "API REST de tickets de soporte (Node.js + Express + SQLite)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=22.5" },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
